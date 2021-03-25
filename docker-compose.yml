@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  quartz-mongo-database-service:
+    image: "mongo"
+    container_name: quartz-mongo-database-container
+    restart: always
+    ports:
+      - 28017:27017
+#    volumes:
+#      - "./scripts/master-schema.sql:/docker-entrypoint-initdb.d/1.sql"
+#      - "./scripts/master-data.sql:/docker-entrypoint-initdb.d/2.sql"
+
+  quartz-mongodb-spring-boot-scheduler-service:
+    image: quartz-mongodb-spring-boot-scheduler-image
+    container_name: quartz-mongodb-spring-boot-scheduler-container
+    build: .
+    ports:
+      - 9090:8080
+    restart: always
+    depends_on:
+      - quartz-mongo-database-service
